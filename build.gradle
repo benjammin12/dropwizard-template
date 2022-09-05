@@ -1,0 +1,45 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+// Set our project variables
+project.ext {
+    dropwizardVersion = '2.1.1'
+    guiceVersion = '4.0'
+}
+
+mainClassName = 'org.example.HelloWorldApplication'
+
+repositories {
+    mavenCentral()
+}
+
+run {
+    args = ['server', 'config/dev.yml']
+}
+
+shadowJar {
+    mergeServiceFiles()
+    exclude 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.SF'
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+    archiveName 'sample-dropwizard-rest-stub.jar'
+}
+
+dependencies {
+    implementation (
+            'io.dropwizard:dropwizard-core:' + dropwizardVersion,
+            'com.google.inject:guice:' + guiceVersion
+    )
+}

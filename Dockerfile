@@ -1,0 +1,1 @@
+# Pass dropwizard yaml config into run command
